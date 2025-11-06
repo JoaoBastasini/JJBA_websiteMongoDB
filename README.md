@@ -36,7 +36,7 @@ Este projeto foi desenvolvido para a disciplina de Bancos de Dados II, com o obj
     ```bash
     npm install
     ```
-    Isso irá ler o `package.json` e instalar o `express` e o `pg` na pasta `node_modules`.*
+    Isso irá ler o `package.json` e instalar o `express` e o `pg` na pasta `node_modules`.
 
 3. **Inicie o servidor**
     <br>Ainda no terminal, execute:
@@ -46,5 +46,4 @@ Este projeto foi desenvolvido para a disciplina de Bancos de Dados II, com o obj
     Você deverá ver a mensagem: `Servidor rodando em http://localhost:3000` 
 
 4. **Acesse a Aplicação**
-<br>Abra seu navegador e acesse `http://localhost:3000/stands.html` para ver a página de Stands funcionando.
 <br>Acesse `http://localhost:3000/` (ou `http://localhost:3000/index.html`) para ver a página inicial.
