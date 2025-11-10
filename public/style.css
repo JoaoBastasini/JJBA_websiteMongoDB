@@ -75,7 +75,8 @@ footer{
   text-align: center;
 }
 
-#lista-personagens {
+#lista-personagens,
+#lista-stands {
     max-width: 700px;  /*Deixa o container "pequeno"*/
     margin: 0 auto;    /*Centraliza o container na tela*/
 
@@ -86,20 +87,23 @@ footer{
 }
 
 /*Estilo para a linha separadora <hr>*/
-#lista-personagens hr {
+#lista-personagens hr,
+#lista-stands hr {
     border: 0;
     border-top: 1px solid #46096e;
     margin: 1.5rem 0;
 }
 
-#lista-personagens h2 {
+#lista-personagens h2,
+#lista-stands h2 {
     color: #ffd6ff; /*Cor da letra A, B, C...*/
     margin-top: 1.5rem;
     border-bottom: 2px solid #d0bcdd;
     padding-bottom: 5px;
 }
 
-#lista-personagens a.link-personagem {
+#lista-personagens a.link-personagem,
+#lista-stands a.link-stand {
     display: block; /*Faz cada link ocupar uma linha*/
     color: #f8f9fa;
     text-decoration: none;
@@ -108,7 +112,36 @@ footer{
     margin: 4px 0;
 }
 
-#lista-personagens a.link-personagem:hover {
+#lista-personagens a.link-personagem:hover,
+#lista-stands a.link-stand:hover {
     background-color: #3c1361;
     color: #fff;
+}
+
+/*Estilo para links internos nas páginas de detalhes
+  (ex: link do Stand na pág. do Personagem, e vice-versa)*/
+#detalhes-container a,
+#detalhes-stand a {
+    /*Cor inicial (usei a mesma cor do "strong" para destacar)*/
+    color: #f7a0ff;
+    
+    /*Remove sublinhado*/
+    text-decoration: none;
+    
+    /*Deixa a fonte um pouco mais forte*/
+    font-weight: 600;
+    
+    /*Add "padding" para criar o efeito de botão*/
+    padding: 2px 5px;
+    border-radius: 4px;
+    
+    /*Transição suave para o efeito hover*/
+    transition: all 0.2s ease-in-out;
+}
+
+/*Efeito :hover*/
+#detalhes-container a:hover,
+#detalhes-stand a:hover {
+    background-color: #3c1361; /*Fundo roxo escuro no hover*/
+    color: #fff;               /*Texto branco no hover*/
 }
