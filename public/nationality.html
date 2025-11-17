@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Enciclopédia JoJo - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="global.js" defer></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Enciclopédia JJBA - Dashboard de Dados</h1>
+        <nav>
+            <a href="index.html">Início</a>
+            <a href="characters.html">Personagens</a>
+            <a href="stands.html">Stands</a>
+            <a href="parts.html">Partes</a>
+            <b>Dashboard</b>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h2 style="text-align: center; color: #ffd6ff;">Análise de Personagens</h2>
+            
+            <div class="chart-box"> 
+                <h3>Personagens por Nacionalidade</h3>
+                <div class="chart-container" style="max-width: 400px; aspect-ratio: auto; width: 100%;">
+                    <canvas id="nacionalidadeChart"></canvas> 
+                </div>
+            </div>
+
+            </section>
+    </main>
+
+    <script>
+        async function carregarDashboard() {
+            try {
+                // Busca dados da API de estatísticas
+                const response = await fetch('/api/estatisticas/nacionalidade');
+                if (!response.ok) {
+                    throw new Error('Falha ao buscar estatísticas de nacionalidade');
+                }
+                const dados = await response.json(); 
+                // Ex: [{ nacionalidade: 'Japonesa', count: '10' }, ...]
+
+                // Prepara os dados para o Chart.js
+                const labels = dados.map(item => item.nacionalidade); // Ex: ['Japonesa', 'Britânica', ...]
+                const counts = dados.map(item => parseInt(item.count)); // Ex: [10, 5, ...]
+
+                // Define as cores (usando o esquema de cores do CSS)
+                const cores = [
+                    '#b5179e', // Roxo escuro
+                    '#7209b7', // Roxo médio
+                    '#560bad', // Azul-roxo
+                    '#3a0ca3', // Azul escuro
+                    '#f7a0ff', // Roxo claro
+                    '#ffd6ff', // Branco/Rosa claro
+                ];
+                
+                // Cria o gráfico
+                const ctx = document.getElementById('nacionalidadeChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Contagem de Personagens',
+                            data: counts,
+                            backgroundColor: cores,
+                            borderColor: '#1a001f',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'right', // Move a legenda para a direita
+                                labels: {
+                                    color: '#f8f9fa' // Cor branca para a legenda
+                                }
+                            },
+                            title: {
+                                display: false, // O <h3> já é o título
+                            }
+                        }
+                    }
+                });
+
+            } catch (error) {
+                console.error('Erro ao carregar Dashboard:', error);
+                // Exibir erro dentro do chart-box
+                document.querySelector('.chart-box').innerHTML = '<p style="color: #f7a0ff;">Erro ao carregar dados do gráfico.</p>';
+            }
+        }
+
+        window.onload = carregarDashboard;
+    </script>
+
+    <footer>
+        <p>Projeto desenvolvido pelos alunos João Bastasini, Julia Amadio e Thiago Uliame para a disciplina de Bancos de Dados II.</p>
+    </footer>
+</body>
+</html>

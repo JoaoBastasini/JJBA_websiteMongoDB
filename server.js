@@ -178,6 +178,26 @@ app.get('/api/partes-com-episodios', async (req, res) => {
   }
 });
 
+// ROTA DA API: Contagem de Personagens por Nacionalidade (para o Dashboard)
+app.get('/api/estatisticas/nacionalidade', async (req, res) => {
+  try {
+    // Query SQL: Agrupa e conta personagens por nacionalidade
+    const query = `
+      SELECT nacionalidade, COUNT(*) 
+      FROM Personagens 
+      GROUP BY nacionalidade 
+      ORDER BY count DESC
+    `;
+    const result = await pool.query(query);
+    
+    // Envia o resultado: Ex: [{ nacionalidade: 'Japonesa', count: '10' }, ...]
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Erro ao buscar estatísticas de nacionalidade:', err);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
 //Iniciar o Servidor
 app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`);
