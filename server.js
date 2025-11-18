@@ -73,6 +73,20 @@ app.get('/api/personagem/:nome', async (req, res) => {
     const resultStands = await pool.query(queryStands, [nomePersonagem]);
 
     personagem.stands = resultStands.rows; 
+
+    //Agora, busca os grupos (nome, descrição e status)
+    //Usamos JOIN para ligar grupos -> personagem_grupo
+    const queryGrupos = `
+      SELECT G.nome, G.descricao, G.vilao_aliado 
+      FROM Grupos AS G
+      JOIN Personagem_Grupo AS PG ON G.nome = PG.grupo_nome
+      WHERE PG.personagem_nome = $1`;
+
+    const resultGrupos = await pool.query(queryGrupos, [nomePersonagem]);
+
+    //Addd a array de grupos ao objeto do personagem
+    //(Será uma array vazia [] se ele não pertencer a nenhum grupo)
+    personagem.grupos = resultGrupos.rows;
     
     // [CORREÇÃO] Query 3: Busca os episódios (Sem espaços inválidos)
     // A indentação foi refeita com espaços normais.

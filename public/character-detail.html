@@ -28,6 +28,37 @@
         #detalhes-container p strong {
             color: #f7a0ff; /*Cor roxa mais clara para o label*/
         }
+        /*Estilo para a seção de Grupos*/
+        /*(Reutiliza o estilo do h3 de Habilidades que fizemos antes)*/
+        #detalhes-container h3 { 
+            color: #f7a0ff;
+            margin-top: 2rem;
+            border-bottom: 1px solid #3c1361;
+            padding-bottom: 5px;
+        }
+        .grupo-item {
+            padding: 10px;
+            margin-top: 0.5rem;
+            border-radius: 4px;
+            border-left-width: 5px; /*Borda lateral grossa*/
+            border-left-style: solid;
+            font-size: 1rem; /*Um pouco menor que o <p> principal*/
+        }
+        .grupo-item strong {
+            color: #ffd6ff; /*Nome do grupo destacado*/
+        }
+        .grupo-item span {
+            color: #d0bcdd; /*Descrição mais suave*/
+        }
+        /*Cores dinâmicas baseadas no 'vilao_aliado'*/
+        .grupo-item.aliado {
+            background-color: rgba(56, 179, 131, 0.1); /*Fundo verde-claro*/
+            border-left-color: #38b383; /*Borda verde*/
+        }
+        .grupo-item.vilao {
+            background-color: rgba(221, 78, 93, 0.1); /*Fundo vermelho-claro*/
+            border-left-color: #dd4e5d; /*Borda vermelha*/
+        }
     </style>
 </head>
 <body>
@@ -73,6 +104,27 @@
                 //3. Limpa o "Carregando..." e constrói o HTML com os dados
                 container.innerHTML = ''; //Limpa
 
+                //--- LÓGICA PARA MOSTRAR IMG ---
+                //1. Verifica se o nome da imagem existe no banco
+                if (personagem.imgname) { 
+
+                    //2. Cria um elemento <img>
+                    const img = document.createElement('img');
+
+                    //3. Constrói o caminho (src) dinamicamente
+                    img.src = '/images/personagens/' + personagem.imgname; 
+
+                    //ESTILOS DE CENTRALIZAÇÃO
+                    img.style.display = 'block';        //Torna a imagem um elemento de bloco
+                    img.style.margin = '0 auto';        //Centraliza horizontalmente (auto nas laterais)
+                    img.style.marginBottom = '1.5rem';  //Adiciona um espaço abaixo, antes do título
+                    img.style.maxWidth = '300px';       //Largura máxima
+
+                    //4. Adiciona a imagem ao container
+                    container.appendChild(img); 
+                }
+                //------------ FIM -----------
+
                 //Título
                 const titulo = document.createElement('h2');
                 titulo.textContent = personagem.nome;
@@ -111,6 +163,38 @@
                     //Se o personagem não tem stand (ex: Lisa Lisa), mostra "Nenhum"
                     container.appendChild(criarDetalhe('Stand(s):', 'Nenhum'));
                 }
+
+                //NOVO BLOCO para Grupos
+                //O 'personagem.grupos' agora vem da nossa API atualizada
+                if (personagem.grupos && personagem.grupos.length > 0) {
+
+                    //Cria um título para a seção
+                    const h3Grupos = document.createElement('h3');
+                    h3Grupos.textContent = 'Afiliação(ões)';
+                    container.appendChild(h3Grupos);
+
+                    //Faz um loop por todos os grupos (ex: Jotaro está em 2)
+                    personagem.grupos.forEach(grupo => {
+                        const divGrupo = document.createElement('div');
+                        divGrupo.className = 'grupo-item'; //Aplica o CSS
+
+                        //Adiciona a classe 'vilao' ou 'aliado'
+                        divGrupo.classList.add(grupo.vilao_aliado ? 'vilao' : 'aliado');
+
+                        //Cria o nome (negrito)
+                        const nomeGrupo = document.createElement('strong');
+                        nomeGrupo.textContent = grupo.nome;
+
+                        //Cria a descrição e status
+                        const descGrupo = document.createElement('span');
+                        descGrupo.textContent = ` (${grupo.vilao_aliado ? 'Grupo vilão' : 'Grupo aliado'}) - ${grupo.descricao}`;
+
+                        divGrupo.appendChild(nomeGrupo);
+                        divGrupo.appendChild(descGrupo);
+                        container.appendChild(divGrupo);
+                    });
+                }
+                //--- FIM DO NOVO BLOCO ---
 
                 if (personagem.episodios && personagem.episodios.length > 0) {
                     
