@@ -40,7 +40,8 @@ nav a:hover{
 }
 
 nav b{
-  color: #4e344e;
+  color: #ffd6ff;
+  background-color: #3a0ca3;
   text-decoration: none;
   margin: 0 10px;
   padding: 6px 10px;
