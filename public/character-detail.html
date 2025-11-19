@@ -2,62 +2,130 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Enciclopédia JoJo - Detalhes</title>
     <link rel="stylesheet" href="style.css">
     <script src="global.js" defer></script>
+    
     <style>
-        /*Estilos para a página de detalhes*/
+        /* --- 1. CONTAINER PRINCIPAL --- */
         #detalhes-container {
             background-color: #2b0b3f;
-            padding: 1.5rem;
-            border-radius: 8px;
-            max-width: 600px;
-            margin: 1rem auto;
+            padding: 2.5rem;
+            border-radius: 12px;
+            max-width: 1000px; 
+            margin: 2rem auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            /* Garante que o padding não aumente a largura total */
+            box-sizing: border-box; 
         }
-        #detalhes-container h2 {
-            color: #ffd6ff;
+
+        /* --- 2. O LAYOUT (Desktop: Lado a Lado) --- */
+        .layout-duplo {
+            display: flex;           
+            flex-direction: row;     
+            justify-content: space-between;
+            align-items: flex-start; 
+            gap: 3rem;               
+        }
+
+        /* --- 3. COLUNA DA ESQUERDA (TEXTO) --- */
+        .coluna-info {
+            flex: 1; 
+            min-width: 0; /* Truque CSS para impedir que textos longos estourem o flex */
+        }
+
+        /* --- 4. COLUNA DA DIREITA (IMAGEM) --- */
+        .coluna-foto {
+            flex: 0 0 350px; /* Largura fixa no Desktop */
             text-align: center;
+        }
+
+        .coluna-foto img {
+            width: 100%;         
+            height: auto;        
+            border-radius: 12px;
+            border: 2px solid #7209b7;
+            box-shadow: 0 0 20px rgba(157, 78, 221, 0.4);
+            display: block;
+        }
+
+        /* --- ESTILOS DE TEXTO --- */
+        .coluna-info h2 {
+            color: #ffd6ff;
+            font-size: 2.5rem;
             margin-top: 0;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid #7209b7;
+            display: inline-block;
+            padding-bottom: 5px;
+            /* Quebra o texto se o nome for muito longo no mobile */
+            word-wrap: break-word; 
         }
-        #detalhes-container p {
+
+        .detalhe-linha {
             font-size: 1.1rem;
-            line-height: 1.6;
-            border-bottom: 1px solid #3c1361;
-            padding-bottom: 10px;
+            line-height: 1.8;
+            border-bottom: 1px solid rgba(60, 19, 97, 0.5);
+            padding: 8px 0;
+            margin: 0;
+            color: #e0c3fc;
         }
-        #detalhes-container p strong {
-            color: #f7a0ff; /*Cor roxa mais clara para o label*/
+        .detalhe-linha strong {
+            color: #fff;
+            font-size: 1.15rem;
+            margin-right: 8px;
         }
-        /*Estilo para a seção de Grupos*/
-        /*(Reutiliza o estilo do h3 de Habilidades que fizemos antes)*/
-        #detalhes-container h3 { 
-            color: #f7a0ff;
+
+        h3.titulo-secao {
+            color: #ffd6ff;
             margin-top: 2rem;
-            border-bottom: 1px solid #3c1361;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #7209b7;
             padding-bottom: 5px;
         }
-        .grupo-item {
-            padding: 10px;
-            margin-top: 0.5rem;
-            border-radius: 4px;
-            border-left-width: 5px; /*Borda lateral grossa*/
-            border-left-style: solid;
-            font-size: 1rem; /*Um pouco menor que o <p> principal*/
+
+        .grupo-card {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            border-left: 4px solid #ccc;
         }
-        .grupo-item strong {
-            color: #ffd6ff; /*Nome do grupo destacado*/
-        }
-        .grupo-item span {
-            color: #d0bcdd; /*Descrição mais suave*/
-        }
-        /*Cores dinâmicas baseadas no 'vilao_aliado'*/
-        .grupo-item.aliado {
-            background-color: rgba(56, 179, 131, 0.1); /*Fundo verde-claro*/
-            border-left-color: #38b383; /*Borda verde*/
-        }
-        .grupo-item.vilao {
-            background-color: rgba(221, 78, 93, 0.1); /*Fundo vermelho-claro*/
-            border-left-color: #dd4e5d; /*Borda vermelha*/
+        .grupo-card.aliado { border-left-color: #38b383; background: rgba(56, 179, 131, 0.1); }
+        .grupo-card.vilao { border-left-color: #dd4e5d; background: rgba(221, 78, 93, 0.1); }
+
+        /* --- RESPONSIVIDADE (CELULAR) --- */
+        @media (max-width: 850px) {
+            /* Reduz o padding do container para ganhar espaço na tela pequena */
+            #detalhes-container {
+                padding: 1.5rem;
+                margin: 1rem; /* Margem menor nas laterais da tela */
+            }
+
+            .layout-duplo {
+                flex-direction: column-reverse; /* Imagem vai para o topo */
+                align-items: center;
+                gap: 2rem;
+            }
+
+            .coluna-foto {
+                /* Remove a largura fixa de 350px */
+                flex: auto;
+                width: 100%; 
+                max-width: 400px; /* Limite máximo para não ficar gigante */
+            }
+
+            .coluna-info h2 {
+                display: block;
+                text-align: center;
+                font-size: 2rem; /* Fonte um pouco menor no mobile */
+            }
+            
+            .coluna-info {
+                width: 100%; /* Garante que o texto use a largura total disponível */
+            }
         }
     </style>
 </head>
@@ -66,245 +134,145 @@
         <h1>Enciclopédia JJBA - Detalhes do Personagem</h1>
         <nav>
             <a href="index.html">Início</a>
-            <a href="stands.html">Stands</a>
             <a href="characters.html">Personagens</a>
+            <a href="stands.html">Stands</a>
             <a href="parts.html">Partes</a>
+            <a href="nationality.html">Dashboard</a>
         </nav>
     </header>
 
     <main>
         <div id="detalhes-container">
-            <p>Carregando...</p>
+            <p style="text-align:center">Carregando...</p>
         </div>
     </main>
 
     <script>
-        //Função para buscar e exibir os detalhes do personagem
         async function carregarDetalhes() {
             const container = document.getElementById('detalhes-container');
+            
             try {
-                //1. Pega os parâmetros da URL (ex: ?nome=Dio%20Brando)
                 const urlParams = new URLSearchParams(window.location.search);
-                const nomePersonagem = urlParams.get('nome'); //'Dio Brando'
+                const nomePersonagem = urlParams.get('nome');
 
                 if (!nomePersonagem) {
                     container.innerHTML = '<h2>Erro</h2><p>Nenhum personagem selecionado.</p>';
                     return;
                 }
 
-                //2. Chama a nossa API de detalhe
                 const response = await fetch('/api/personagem/' + encodeURIComponent(nomePersonagem));
-
-                if (!response.ok) {
-                    throw new Error('Personagem não encontrado');
-                }
-
-                const personagem = await response.json(); //Pega o objeto {nome: ..., genero: ...}
-
-                //3. Limpa o "Carregando..." e constrói o HTML com os dados
-                container.innerHTML = ''; //Limpa
-
-                //--- LÓGICA PARA MOSTRAR IMG ---
-                //1. Verifica se o nome da imagem existe no banco
-                if (personagem.imgname) { 
-
-                    //2. Cria um elemento <img>
-                    const img = document.createElement('img');
-
-                    //3. Constrói o caminho (src) dinamicamente
-                    img.src = '/images/personagens/' + personagem.imgname; 
-
-                    //ESTILOS DE CENTRALIZAÇÃO
-                    img.style.display = 'block';        //Torna a imagem um elemento de bloco
-                    img.style.margin = '0 auto';        //Centraliza horizontalmente (auto nas laterais)
-                    img.style.marginBottom = '1.5rem';  //Adiciona um espaço abaixo, antes do título
-                    img.style.maxWidth = '300px';       //Largura máxima
-
-                    //4. Adiciona a imagem ao container
-                    container.appendChild(img); 
-                }
-                //------------ FIM -----------
-
-                //Título
-                const titulo = document.createElement('h2');
-                titulo.textContent = personagem.nome;
-                container.appendChild(titulo);
-
-                //Lista de Detalhes (usando os campos da tabela 'Personagens')
-                container.appendChild(criarDetalhe('Gênero:', personagem.genero));
-                container.appendChild(criarDetalhe('Nacionalidade:', personagem.nacionalidade));
-                container.appendChild(criarDetalhe('Ano de Nascimento:', personagem.ano_nascimento));
-                container.appendChild(criarDetalhe('Primeira Aparição:', formatarPrimeiraAparicao(personagem.primeira_aparicao)));
-                container.appendChild(criarDetalhe('Status:', personagem.vivo ? 'Vivo' : 'Morto'));
-                //NOVO BLOCO para Stands
-                //O 'personagem.stands' agora vem da nossa API atualizada
-                if (personagem.stands && personagem.stands.length > 0) {
-                    //Se houver stands, cria um parágrafo para eles
-                    const pStands = document.createElement('p');
-                    pStands.innerHTML = `<strong>Stand(s):</strong> `;
-
-                    //Faz um loop por todos os stands (útil se um dia um personagem tiver mais de 1)
-                    personagem.stands.forEach((stand, index) => {
-                        //Cria o link <a>
-                        const linkStand = document.createElement('a');
-                        linkStand.href = `stand-detail.html?nome=${encodeURIComponent(stand.nome)}`;
-                        linkStand.textContent = stand.nome;
-
-                        pStands.appendChild(linkStand); //Adiciona o link ao parágrafo
-
-                        //Adiciona uma vírgula se houver mais stands na lista
-                        if (index < personagem.stands.length - 1) {
-                            pStands.append(', ');
-                        }
-                    });
-
-                    container.appendChild(pStands);
-                } else {
-                    //Se o personagem não tem stand (ex: Lisa Lisa), mostra "Nenhum"
-                    container.appendChild(criarDetalhe('Stand(s):', 'Nenhum'));
-                }
-
-                //NOVO BLOCO para Grupos
-                //O 'personagem.grupos' agora vem da nossa API atualizada
-                if (personagem.grupos && personagem.grupos.length > 0) {
-
-                    //Cria um título para a seção
-                    const h3Grupos = document.createElement('h3');
-                    h3Grupos.textContent = 'Afiliação(ões)';
-                    container.appendChild(h3Grupos);
-
-                    //Faz um loop por todos os grupos (ex: Jotaro está em 2)
-                    personagem.grupos.forEach(grupo => {
-                        const divGrupo = document.createElement('div');
-                        divGrupo.className = 'grupo-item'; //Aplica o CSS
-
-                        //Adiciona a classe 'vilao' ou 'aliado'
-                        divGrupo.classList.add(grupo.vilao_aliado ? 'vilao' : 'aliado');
-
-                        //Cria o nome (negrito)
-                        const nomeGrupo = document.createElement('strong');
-                        nomeGrupo.textContent = grupo.nome;
-
-                        //Cria a descrição e status
-                        const descGrupo = document.createElement('span');
-                        descGrupo.textContent = ` (${grupo.vilao_aliado ? 'Grupo vilão' : 'Grupo aliado'}) - ${grupo.descricao}`;
-
-                        divGrupo.appendChild(nomeGrupo);
-                        divGrupo.appendChild(descGrupo);
-                        container.appendChild(divGrupo);
-                    });
-                }
-                //--- FIM DO NOVO BLOCO ---
-
-                if (personagem.episodios && personagem.episodios.length > 0) {
-                    
-                    // 1. Cria o título da seção
-                    const h3Episodios = document.createElement('h3');
-                    h3Episodios.textContent = 'Aparições em Episódios';
-                    h3Episodios.className = 'section-title'; // Classe para o CSS
-                    container.appendChild(h3Episodios);
-
-                    // 2. Cria a lista (<ul>)
-                    const listaEpisodios = document.createElement('ul');
-                    listaEpisodios.className = 'details-list'; // Classe para o CSS
-                    
-                    // 3. Cria um item (<li>) para cada episódio
-                    personagem.episodios.forEach(ep => {
-                        const li = document.createElement('li');
-                        // O 'ep.numero' e 'ep.nome' vêm do JOIN com a tabela Episodios
-                        li.innerHTML = `<strong>Ep. ${ep.numero}:</strong> ${ep.nome}`; 
-                        listaEpisodios.appendChild(li);
-                    });
-                    
-                    container.appendChild(listaEpisodios);
-                }
-
-                // ==========================================================
-                // NOVO BLOCO - BATALHAS (Baseado na tabela Batalha)
-                //  Alteração Lhama 
-                // ==========================================================
-                if (personagem.batalhas && personagem.batalhas.length > 0) {
-                    
-                    // 1. Cria o título da seção
-                    const h3Batalhas = document.createElement('h3');
-                    h3Batalhas.textContent = 'Confrontos Registrados';
-                    h3Batalhas.className = 'section-title';
-                    container.appendChild(h3Batalhas);
-
-                    // 2. Cria a lista (<ul>)
-                    const listaBatalhas = document.createElement('ul');
-                    listaBatalhas.className = 'details-list';
-                    
-                    // 3. Cria um item (<li>) para cada batalha
-                    personagem.batalhas.forEach(luta => {
-                        const li = document.createElement('li');
-                        // 'luta.vencedor || "N/D"' significa: use o vencedor, 
-                        // mas se for nulo (null), escreva "N/D"
-                        li.innerHTML = `<strong>${luta.personagem_a} vs. ${luta.personagem_b}</strong><br>
-                                        <small>Vencedor: ${luta.vencedor || 'N/D'}</small>`;
-                        listaBatalhas.appendChild(li);
-                    });
-                    
-                    container.appendChild(listaBatalhas);
-                }
+                if (!response.ok) throw new Error('Personagem não encontrado');
                 
-                // ==========================================================
-                // FIM DO NOVO BLOCO
-                // ==========================================================
+                const personagem = await response.json();
+
+                // 1. LIMPEZA
+                container.innerHTML = ''; 
+
+                // 2. ESTRUTURA
+                const layout = document.createElement('div');
+                layout.className = 'layout-duplo';
+
+                // --- COLUNA ESQUERDA (TEXTO) ---
+                const colTexto = document.createElement('div');
+                colTexto.className = 'coluna-info';
+
+                const h2 = document.createElement('h2');
+                h2.textContent = personagem.nome;
+                colTexto.appendChild(h2);
+
+                colTexto.appendChild(criarLinha('Gênero:', personagem.genero));
+                colTexto.appendChild(criarLinha('Nacionalidade:', personagem.nacionalidade));
+                
+                const aparicao = (typeof formatarPrimeiraAparicao === 'function') 
+                                 ? formatarPrimeiraAparicao(personagem.primeira_aparicao) 
+                                 : personagem.primeira_aparicao;
+                colTexto.appendChild(criarLinha('Primeira Aparição:', aparicao));
+                colTexto.appendChild(criarLinha('Ano de Nascimento:', personagem.ano_nascimento));
+                colTexto.appendChild(criarLinha('Status:', personagem.vivo ? 'Vivo' : 'Morto'));
+
+                if (personagem.stands && personagem.stands.length > 0) {
+                    const pStand = document.createElement('p');
+                    pStand.className = 'detalhe-linha';
+                    pStand.innerHTML = '<strong>Stand(s):</strong> ';
+                    
+                    personagem.stands.forEach((stand, i) => {
+                        const link = document.createElement('a');
+                        link.href = `stand-detail.html?nome=${encodeURIComponent(stand.nome)}`;
+                        link.textContent = stand.nome;
+                        link.style.color = '#f7a0ff';
+                        link.style.textDecoration = 'none';
+                        link.style.fontWeight = 'bold';
+
+                        pStand.appendChild(link);
+                        if (i < personagem.stands.length - 1) pStand.append(', ');
+                    });
+                    colTexto.appendChild(pStand);
+                } else {
+                    colTexto.appendChild(criarLinha('Stand(s):', 'Nenhum'));
+                }
+
+                if (personagem.grupos && personagem.grupos.length > 0) {
+                    const h3 = document.createElement('h3');
+                    h3.textContent = 'Afiliação(ões)';
+                    h3.className = 'titulo-secao';
+                    colTexto.appendChild(h3);
+
+                    personagem.grupos.forEach(grupo => {
+                        const div = document.createElement('div');
+                        div.className = 'grupo-card';
+                        div.classList.add(grupo.vilao_aliado ? 'vilao' : 'aliado');
+                        
+                        div.innerHTML = `<strong>${grupo.nome}</strong> <span style="font-size:0.9em">(${grupo.vilao_aliado ? 'Vilões' : 'Aliados'})</span><br><span style="color:#ddd; font-size:0.9em">${grupo.descricao}</span>`;
+                        colTexto.appendChild(div);
+                    });
+                }
+
+                // --- COLUNA DIREITA (IMAGEM) ---
+                const colFoto = document.createElement('div');
+                colFoto.className = 'coluna-foto';
+
+                const arquivoImagem = personagem.imgname || personagem.imagem_nome;
+
+                if (arquivoImagem) {
+                    const img = document.createElement('img');
+                    img.src = '/images/personagens/' + arquivoImagem;
+                    img.alt = personagem.nome;
+                    
+                    img.onerror = () => {
+                        img.style.display = 'none';
+                        colFoto.innerHTML += '<p style="margin-top:20px;">Imagem não encontrada</p>';
+                    };
+                    colFoto.appendChild(img);
+                } else {
+                    colFoto.innerHTML = '<div style="padding:2rem; background:rgba(0,0,0,0.3); border-radius:8px">Sem Imagem</div>';
+                }
+
+                // 3. MONTAGEM
+                layout.appendChild(colTexto);
+                layout.appendChild(colFoto);
+                container.appendChild(layout);
 
             } catch (error) {
-                console.error('Falha ao carregar detalhes:', error);
-                container.innerHTML = '<h2>Erro</h2><p>Não foi possível carregar os detalhes do personagem.</p>';
+                console.error(error);
+                container.innerHTML = '<h2>Erro</h2><p>Falha ao carregar dados.</p>';
             }
         }
 
-        // [NOVA FUNÇÃO]
-        // Mapeia os códigos das Partes para os nomes completos
-        // (Baseado no seu PopulateJoJoCorrected.sql)
-        const partMap = {
-            'PB': 'Phantom Blood',
-            'BT': 'Battle Tendency',
-            'SC': 'Stardust Crusaders',
-            'DU': 'Diamond is Unbreakable', 
-            'GW': 'Golden Wind',           
-            'SO': 'Stone Ocean'            
-        };
-
-        // [NOVA FUNÇÃO]
-        // Formata o código 'PB9' para 'Phantom Blood 9'
-        function formatarPrimeiraAparicao(codigo) {
-            if (!codigo) {
-                return 'N/A'; // Retorna N/A se o campo for nulo
-            }
-
-            // Esta expressão regular (RegEx) separa letras de números.
-            // Ex: "SC1" -> ["SC1", "SC", "1"]
-            const match = codigo.match(/^([A-Z]+)(\d+)$/);
-
-            if (match) {
-                const partCode = match[1]; // "SC"
-                const episodeNumber = match[2]; // "1"
-                
-                // Procura o nome completo no mapa. Se não achar, usa o próprio código (ex: "SC")
-                const partName = partMap[partCode] || partCode;
-                
-                // Retorna o formato final
-                return `${partName} ${episodeNumber}`; // "Stardust Crusaders 1"
-            }
-
-            // Se não der "match" (ex: for um formato que não esperamos), 
-            // apenas retorna o código original que veio do banco.
-            return codigo;
-        }
-
-        //Função auxiliar para criar as linhas de <p>
-        function criarDetalhe(label, valor) {
+        function criarLinha(label, valor) {
             const p = document.createElement('p');
+            p.className = 'detalhe-linha';
             p.innerHTML = `<strong>${label}</strong> ${valor || 'N/A'}`;
             return p;
         }
 
-        //Inicia tudo quando a página carregar
+        function formatarPrimeiraAparicao(codigo) {
+             if (!codigo) return 'N/A';
+             const match = codigo.match(/^([A-Z]+)(\d+)$/);
+             const partMap = { 'PB': 'Phantom Blood', 'BT': 'Battle Tendency', 'SC': 'Stardust Crusaders', 'DIU': 'Diamond is Unbreakable', 'GW': 'Golden Wind', 'SO': 'Stone Ocean' };
+             if (match) return `${partMap[match[1]] || match[1]} ${match[2]}`;
+             return codigo;
+        }
+
         window.onload = carregarDetalhes;
     </script>
 </body>
