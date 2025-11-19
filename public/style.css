@@ -316,3 +316,60 @@ footer.footer-hidden {
     margin: 0;
     line-height: 1.4;
 }
+
+/* ------------------------------------- */
+/* ESTILOS ESPECÍFICOS DO DASHBOARD (NATIONALITY) */
+/* ------------------------------------- */
+
+/* O card que envolve o gráfico e o título */
+.chart-box {
+    background-color: #2b0b3f; /* Fundo roxo escuro */
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 800px; /* Limita a largura do card na tela */
+    margin: 2rem auto; /* Centraliza o card */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Sombra para profundidade */
+    
+    /* Animação de hover */
+    transition: all 0.3s ease;
+}
+
+.chart-box:hover {
+    /* Efeito sutil ao passar o mouse */
+    box-shadow: 0 8px 20px rgba(181, 23, 158, 0.4); /* Sombra roxa mais destacada */
+    transform: translateY(-2px);
+}
+
+.chart-box h3 {
+    text-align: center;
+    color: #ffd6ff;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+/* ATUALIZADO: Container do Canvas 
+   Removemos o background, border-radius e box-shadow antigos que criavam o círculo.
+*/
+.chart-container {
+    /* Centraliza o gráfico dentro do chart-box */
+    margin: 0 auto; 
+    /* Garante um tamanho maior para o gráfico (70% da largura do card) */
+    width: 88%; 
+    max-width: 800px; /* Limite máximo para telas grandes */
+    /* Garante que o gráfico seja quadrado e não deforme */
+    aspect-ratio: 1 / 1; 
+    
+    /* RESET COMPLETO DE ESTILOS CIRCULARES */
+    background: transparent;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    display: block;
+}
+
+/* Estilo para garantir que o canvas ocupe o espaço do container */
+#nacionalidadeChart {
+    width: 100% !important;
+    height: 100% !important;
+}
