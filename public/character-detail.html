@@ -9,7 +9,7 @@
     <script src="global.js" defer></script>
     
     <style>
-        /* --- 1. CONTAINER PRINCIPAL --- */
+        /*CONTAINER PRINCIPAL*/
         #detalhes-container {
             background-color: #2b0b3f;
             padding: 2.5rem;
@@ -17,11 +17,11 @@
             max-width: 1000px; 
             margin: 2rem auto;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            /* Garante que o padding não aumente a largura total */
+            /*Garante que o padding não aumente a largura total*/
             box-sizing: border-box; 
         }
 
-        /* --- 2. O LAYOUT (Desktop: Lado a Lado) --- */
+        /*LAYOUT*/
         .layout-duplo {
             display: flex;           
             flex-direction: row;     
@@ -30,15 +30,15 @@
             gap: 3rem;               
         }
 
-        /* --- 3. COLUNA DA ESQUERDA (TEXTO) --- */
+        /*COLUNA DA ESQUERDA (TEXTO)*/
         .coluna-info {
             flex: 1; 
-            min-width: 0; /* Truque CSS para impedir que textos longos estourem o flex */
+            min-width: 0; /*Truque CSS para impedir que textos longos estourem o flex*/
         }
 
-        /* --- 4. COLUNA DA DIREITA (IMAGEM) --- */
+        /*COLUNA DA DIREITA (IMAGEM)*/
         .coluna-foto {
-            flex: 0 0 350px; /* Largura fixa no Desktop */
+            flex: 0 0 350px; /*Largura fixa no desktop*/
             text-align: center;
         }
 
@@ -51,7 +51,7 @@
             display: block;
         }
 
-        /* --- ESTILOS DE TEXTO --- */
+        /*ESTILOS DE TEXTO*/
         .coluna-info h2 {
             color: #ffd6ff;
             font-size: 2.5rem;
@@ -60,7 +60,7 @@
             border-bottom: 3px solid #7209b7;
             display: inline-block;
             padding-bottom: 5px;
-            /* Quebra o texto se o nome for muito longo no mobile */
+            /*Quebra o texto se o nome for muito longo no mobile*/
             word-wrap: break-word; 
         }
 
@@ -96,35 +96,35 @@
         .grupo-card.aliado { border-left-color: #38b383; background: rgba(56, 179, 131, 0.1); }
         .grupo-card.vilao { border-left-color: #dd4e5d; background: rgba(221, 78, 93, 0.1); }
 
-        /* --- RESPONSIVIDADE (CELULAR) --- */
+        /*RESPONSIVIDADE (CELULAR)*/
         @media (max-width: 850px) {
-            /* Reduz o padding do container para ganhar espaço na tela pequena */
+            /*Reduz o padding do container para ganhar espaço na tela pequena*/
             #detalhes-container {
                 padding: 1.5rem;
-                margin: 1rem; /* Margem menor nas laterais da tela */
+                margin: 1rem; /*Margem menor nas laterais da tela*/
             }
 
             .layout-duplo {
-                flex-direction: column-reverse; /* Imagem vai para o topo */
+                flex-direction: column-reverse; /*Imagem vai para o topo*/
                 align-items: center;
                 gap: 2rem;
             }
 
             .coluna-foto {
-                /* Remove a largura fixa de 350px */
+                /*Remove a largura fixa de 350px*/
                 flex: auto;
                 width: 100%; 
-                max-width: 400px; /* Limite máximo para não ficar gigante */
+                max-width: 400px; /*Limite máximo para não ficar gigante*/
             }
 
             .coluna-info h2 {
                 display: block;
                 text-align: center;
-                font-size: 2rem; /* Fonte um pouco menor no mobile */
+                font-size: 2rem; /*Fonte um pouco menor no mobile*/
             }
             
             .coluna-info {
-                width: 100%; /* Garante que o texto use a largura total disponível */
+                width: 100%; /*Garante que o texto use a largura total disponível*/
             }
         }
     </style>
@@ -165,14 +165,14 @@
                 
                 const personagem = await response.json();
 
-                // 1. LIMPEZA
+                //LIMPEZA
                 container.innerHTML = ''; 
 
-                // 2. ESTRUTURA
+                //ESTRUTURA
                 const layout = document.createElement('div');
                 layout.className = 'layout-duplo';
 
-                // --- COLUNA ESQUERDA (TEXTO) ---
+                //COLUNA ESQUERDA (TEXTO)
                 const colTexto = document.createElement('div');
                 colTexto.className = 'coluna-info';
 
@@ -227,11 +227,11 @@
                     });
                 }
 
-                // --- COLUNA DIREITA (IMAGEM) ---
+                //COLUNA DIREITA (IMAGEM)
                 const colFoto = document.createElement('div');
                 colFoto.className = 'coluna-foto';
 
-                const arquivoImagem = personagem.imgname || personagem.imagem_nome;
+                const arquivoImagem = personagem.imgname;
 
                 if (arquivoImagem) {
                     const img = document.createElement('img');
@@ -247,7 +247,7 @@
                     colFoto.innerHTML = '<div style="padding:2rem; background:rgba(0,0,0,0.3); border-radius:8px">Sem Imagem</div>';
                 }
 
-                // 3. MONTAGEM
+                //MONTAGEM
                 layout.appendChild(colTexto);
                 layout.appendChild(colFoto);
                 container.appendChild(layout);
@@ -275,5 +275,9 @@
 
         window.onload = carregarDetalhes;
     </script>
+
+    <footer>
+        <p>Projeto desenvolvido pelos alunos João Bastasini, Julia Amadio e Thiago Uliame para a disciplina de Bancos de Dados II.</p>
+    </footer>
 </body>
 </html>

@@ -2,53 +2,172 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Enciclopédia JoJo - Detalhes do Stand</title>
     <link rel="stylesheet" href="style.css">
     <script src="global.js" defer></script>
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        /*Estilos da página de detalhes (como em character-detail.html)*/
+        /* --- 1. CONTAINER PRINCIPAL --- */
         #detalhes-stand {
             background-color: #2b0b3f;
-            padding: 1.5rem;
-            border-radius: 8px;
-            max-width: 700px; /*Um pouco maior para o gráfico*/
-            margin: 1rem auto;
+            padding: 2.5rem;
+            border-radius: 12px;
+            max-width: 1100px;
+            margin: 2rem auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-sizing: border-box;
         }
-        #detalhes-stand h2 {
-            color: #ffd6ff;
+
+        /* --- 2. LAYOUT DUPLO --- */
+        .layout-duplo {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 3rem;
+        }
+
+        /* --- 3. COLUNA ESQUERDA (TEXTO + GRÁFICO) --- */
+        .coluna-info {
+            flex: 1; /* Ocupa o espaço restante */
+            /* O TRUQUE: min-width: 0 impede que o flex item trave em tamanhos grandes */
+            min-width: 0; 
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- 4. COLUNA DIREITA (IMAGEM) --- */
+        .coluna-visual {
+            flex: 0 0 400px; /* Largura fixa */
             text-align: center;
+        }
+
+        .img-stand {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            border: 2px solid #7209b7;
+            box-shadow: 0 0 20px rgba(157, 78, 221, 0.4);
+            display: block;
+        }
+
+        /* --- ESTILOS DO GRÁFICO --- */
+        .secao-grafico {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #46096e;
+            width: 100%;
+            
+            /* MUDANÇA: Usar block em vez de flex evita bugs de largura com canvas */
+            display: block; 
+            text-align: center;
+        }
+
+        .chart-box {
+            /* MUDANÇA: position relative é OBRIGATÓRIO para o Chart.js redimensionar bem */
+            position: relative; 
+            
+            width: 100%;
+            max-width: 500px; /* Limite máximo estético */
+            margin: 0 auto;   /* Centraliza o bloco */
+            
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            border: 1px solid #46096e;
+            box-sizing: border-box;
+        }
+        
+        /* Garante que o canvas nunca estoure */
+        #standChart {
+            width: 100% !important;
+            height: auto !important;
+        }
+
+        /* --- ESTILOS DE TEXTO --- */
+        .coluna-info h2 {
+            color: #ffd6ff;
+            font-size: 2.5rem;
             margin-top: 0;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid #7209b7;
+            display: inline-block;
+            padding-bottom: 5px;
+            word-wrap: break-word;
         }
-        #detalhes-stand p {
+
+        .detalhe-linha {
             font-size: 1.1rem;
-            line-height: 1.6;
-            border-bottom: 1px solid #3c1361;
-            padding-bottom: 10px;
+            line-height: 1.8;
+            border-bottom: 1px solid rgba(60, 19, 97, 0.5);
+            padding: 8px 0;
+            margin: 0;
+            color: #e0c3fc;
         }
-        #detalhes-stand p strong {
-            color: #f7a0ff; /*Cor roxa mais clara para o label*/
+        .detalhe-linha strong {
+            color: #fff;
+            font-size: 1.15rem;
+            margin-right: 8px;
         }
 
-        /*Seção de habilidades*/
-        .habilidade {
-            border-left: 3px solid #f7a0ff; /*Uma linha roxa à esquerda*/
-            margin-top: 1rem;
-            padding-left: 10px;
+        .link-interno {
+            color: #f7a0ff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .link-interno:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
 
-            /*Sobrescreve a linha de baixo do <p> normal*/
-            border-bottom: none;
-            padding-bottom: 5px; 
+        h3.titulo-secao {
+            color: #ffd6ff;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #7209b7;
+            padding-bottom: 5px;
+            text-transform: uppercase;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
         }
-        .habilidade:last-of-type {
-            /*Adiciona a linha de baixo apenas no último item*/
-            border-bottom: 1px solid #3c1361;
-            padding-bottom: 10px;
+
+        .habilidade-card {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            border-left: 4px solid #f7a0ff;
         }
-        .habilidade strong {
-            color: #ffd6ff; /*Deixa o nome da habilidade mais claro*/
+
+        /* --- RESPONSIVIDADE --- */
+        @media (max-width: 950px) {
+            #detalhes-stand {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+            .layout-duplo {
+                flex-direction: column-reverse;
+                align-items: center;
+                gap: 2rem;
+            }
+            .coluna-visual {
+                width: 100%;
+                max-width: 450px;
+                flex: auto;
+            }
+            .coluna-info {
+                width: 100%;
+            }
+            .coluna-info h2 {
+                display: block;
+                text-align: center;
+            }
+            .chart-box {
+                padding: 10px;
+            }
         }
     </style>
 </head>
@@ -57,22 +176,21 @@
         <h1>Enciclopédia JJBA - Detalhes do Stand</h1>
         <nav>
             <a href="index.html">Início</a>
-            <a href="stands.html">Stands</a>
             <a href="characters.html">Personagens</a>
+            <a href="stands.html">Stands</a>
             <a href="parts.html">Partes</a>
+            <a href="nationality.html">Dashboard</a>
         </nav>
     </header>
 
     <main>
         <div id="detalhes-stand">
-            <p>Carregando...</p>
+            <p style="text-align:center">Carregando...</p>
         </div>
     </main>
 
     <script>
-        let meuGrafico; //Variável para guardar a instância do gráfico
-
-        //FUNÇÕES DO GRÁFICO
+        let meuGrafico;
 
         function converterStatusParaNumero(status) {
             const mapa = { 'A': 5, 'B': 4, 'C': 3, 'D': 2, 'E': 1, 'N/A': 0, 'Infinito': 5, '?': 0, 'Nulo': 0 };
@@ -90,41 +208,31 @@
                 converterStatusParaNumero(dadosDoStand.potencial)
             ];
 
-            if (meuGrafico) {
-                meuGrafico.destroy();
-            }
+            if (meuGrafico) meuGrafico.destroy();
 
             meuGrafico = new Chart(ctx, {
                 type: 'radar',
                 data: {
-                    labels: ['Poder Destrutivo', 'Velocidade', 'Alcance', 'Durabilidade', 'Precisão', 'Potencial'],
+                    labels: ['Poder', 'Velocidade', 'Alcance', 'Durabilidade', 'Precisão', 'Potencial'],
                     datasets: [{
                         label: dadosDoStand.nome,
                         data: dadosNumericos,
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(247, 160, 255, 0.2)',
+                        borderColor: 'rgba(247, 160, 255, 1)',
                         borderWidth: 2,
-                        pointBackgroundColor: 'rgb(255, 99, 132)'
+                        pointBackgroundColor: '#fff'
                     }]
                 },
                 options: {
+                    responsive: true, //Garante responsividade
+                    maintainAspectRatio: false, //Permite ajustar altura se necessário
                     scales: {
                         r: {
                             min: 0, max: 5,
-                            grid: { color: 'rgba(255, 255, 255, 0.2)', circular: true },
-                            angleLines: { color: 'rgba(255, 255, 255, 0.15)', lineWidth: 1 },
-                            pointLabels: { color: '#ffffff', font: { size: 12, weight: 'bold' }, padding: 6 },
-                            ticks: {
-                                stepSize: 1,
-                                color: '#ffffff',
-                                backdropColor: 'transparent',
-                                font: { size: 12, weight: 'bold' },
-                                tickLength: 0,
-                                callback: function(value) {
-                                    const letters = ['N/A', 'E', 'D', 'C', 'B', 'A'];
-                                    return letters[value] || '';
-                                }
-                            }
+                            ticks: { stepSize: 1, display: false },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                            pointLabels: { color: '#ffd6ff', font: { size: 11, weight: 'bold' } }
                         }
                     },
                     plugins: { legend: { display: false } }
@@ -132,12 +240,9 @@
             });
         }
 
-        //FUNÇÃO DE CARREGAR OS DETALHES (dados que não existiam antes em stands.html)
-
         async function carregarDetalhesStand() {
             const container = document.getElementById('detalhes-stand');
             try {
-                //Pega o nome da URL
                 const urlParams = new URLSearchParams(window.location.search);
                 const nomeStand = urlParams.get('nome');
 
@@ -146,117 +251,110 @@
                     return;
                 }
 
-                //Chama a nossa NOVA API de detalhe do stand
                 const response = await fetch('/api/stand/' + encodeURIComponent(nomeStand));
-
-                if (!response.ok) {
-                    throw new Error('Stand não encontrado');
-                }
+                if (!response.ok) throw new Error('Stand não encontrado');
 
                 const stand = await response.json();
 
-                //Limpa o "Carregando..." e constrói o HTML
-                container.innerHTML = ''; //Limpa
+                container.innerHTML = '';
 
-                //--- LÓGICA PARA MOSTRAR IMG ---
-                //1. Verifica se o nome da imagem existe no banco
-                if (stand.imgname) { 
+                //ESTRUTURA
+                const layout = document.createElement('div');
+                layout.className = 'layout-duplo';
 
-                    //2. Cria um elemento <img>
-                    const img = document.createElement('img');
+                //COLUNA ESQUERDA
+                const colInfo = document.createElement('div');
+                colInfo.className = 'coluna-info';
 
-                    //3. Constrói o caminho (src) dinamicamente
-                    img.src = '/images/stands/' + stand.imgname; 
+                const h2 = document.createElement('h2');
+                h2.textContent = stand.nome;
+                colInfo.appendChild(h2);
 
-                    //ESTILOS DE CENTRALIZAÇÃO
-                    img.style.display = 'block';        //Torna a imagem um elemento de bloco
-                    img.style.margin = '0 auto';        //Centraliza horizontalmente (auto nas laterais)
-                    img.style.marginBottom = '1.5rem';  //Adiciona um espaço abaixo, antes do título
-                    img.style.maxHeight = '500px';       //Largura máxima
-
-                    //4. Adiciona a imagem ao container
-                    container.appendChild(img); 
-                }
-                //------------ FIM -----------
-
-                //Título
-                const titulo = document.createElement('h2');
-                titulo.textContent = stand.nome;
-                container.appendChild(titulo);
-
-                //Exibindo as informações que faltavam
-                //BLOCO para o Usuário
+                const pUsuario = document.createElement('p');
+                pUsuario.className = 'detalhe-linha';
                 if (stand.personagem_nome) {
-                    //Havendo um usuário, cria um parágrafo <p> com um link <a>
-                    const pUsuario = document.createElement('p');
-                    pUsuario.innerHTML = `<strong>Usuário:</strong> <a href="character-detail.html?nome=${encodeURIComponent(stand.personagem_nome)}">${stand.personagem_nome}</a>`;
-                    container.appendChild(pUsuario);
+                    pUsuario.innerHTML = `<strong>Usuário:</strong> <a href="character-detail.html?nome=${encodeURIComponent(stand.personagem_nome)}" class="link-interno">${stand.personagem_nome}</a>`;
                 } else {
-                    //Se não, mostra 'N/A'
-                    container.appendChild(criarDetalhe('Usuário:', 'N/A'));
+                    pUsuario.innerHTML = `<strong>Usuário:</strong> N/A`;
                 }
-                container.appendChild(criarDetalhe('Referência Musical:', stand.referencia));
-                container.appendChild(criarDetalhe('Categoria:', stand.categoria));
+                colInfo.appendChild(pUsuario);
+                colInfo.appendChild(criarLinha('Referência:', stand.referencia));
+                colInfo.appendChild(criarLinha('Categoria:', stand.categoria));
 
-                //BLOCO para HABILIDADES
+                //Habilidades
                 if (stand.habilidades && stand.habilidades.length > 0) {
-                    //Cria um título para a seção
-                    const h3Habilidades = document.createElement('h3');
-                    h3Habilidades.textContent = 'Habilidade(s)';
-                    h3Habilidades.style.color = '#f7a0ff'; //Estilo do detalhes-stand p strong
-                    h3Habilidades.style.marginTop = '2rem'; //Espaçamento
-                    h3Habilidades.style.borderBottom = '1px solid #3c1361'; //Linha
-                    h3Habilidades.style.paddingBottom = '5px';
-                    container.appendChild(h3Habilidades);
+                    const h3 = document.createElement('h3');
+                    h3.textContent = 'Habilidade(s)';
+                    h3.className = 'titulo-secao';
+                    colInfo.appendChild(h3);
 
-                    //Faz um loop por todas as habilidades
-                    stand.habilidades.forEach(habilidade => {
-                        const pHabilidade = document.createElement('p');
-                        pHabilidade.className = 'habilidade'; //Aplica o CSS criado no começo
-
-                        //Cria o texto com negrito no nome
-                        pHabilidade.innerHTML = `<strong>${habilidade.nome}:</strong> ${habilidade.descricao}`;
-                        container.appendChild(pHabilidade);
+                    stand.habilidades.forEach(hab => {
+                        const div = document.createElement('div');
+                        div.className = 'habilidade-card';
+                        div.innerHTML = `<strong>${hab.nome}</strong><br><span style="color:#e0c3fc; font-size:0.95rem">${hab.descricao}</span>`;
+                        colInfo.appendChild(div);
                     });
                 }
-                //FIM DO BLOCO
 
-                //Cria o container e o canvas para o gráfico
+                //Gráfico
+                const divGrafico = document.createElement('div');
+                divGrafico.className = 'secao-grafico';
+                
+                const tituloGrafico = document.createElement('h3');
+                tituloGrafico.className = 'titulo-secao';
+                tituloGrafico.style.marginTop = '0';
+                tituloGrafico.textContent = 'Estatísticas';
+                divGrafico.appendChild(tituloGrafico);
+
                 const chartBox = document.createElement('div');
-                chartBox.className = 'chart-box'; //Usando a classe do style.css
-
-                const chartContainer = document.createElement('div');
-                chartContainer.className = 'chart-container';
+                chartBox.className = 'chart-box';
+                
+                //Define uma altura explícita para o container do gráfico para evitar pulos
+                chartBox.style.height = '400px'; 
 
                 const canvas = document.createElement('canvas');
-                canvas.id = 'standChart'; //O ID que o gráfico espera
+                canvas.id = 'standChart';
+                
+                chartBox.appendChild(canvas);
+                divGrafico.appendChild(chartBox);
+                colInfo.appendChild(divGrafico);
 
-                chartContainer.appendChild(canvas);
-                chartBox.appendChild(chartContainer);
-                container.appendChild(chartBox); //Adiciona o gráfico ao container de detalhes
+                //COLUNA DIREITA
+                const colVisual = document.createElement('div');
+                colVisual.className = 'coluna-visual';
 
-                //Chama a função para desenhar o gráfico
+                const arquivoImagem = stand.imgname || stand.imagem_nome;
+                if (arquivoImagem) {
+                    const img = document.createElement('img');
+                    img.src = '/images/stands/' + arquivoImagem;
+                    img.alt = stand.nome;
+                    img.className = 'img-stand';
+                    img.onerror = () => { img.style.display = 'none'; colVisual.innerHTML = '<p>Sem Imagem</p>'; };
+                    colVisual.appendChild(img);
+                } else {
+                    colVisual.innerHTML = '<div style="padding:2rem; background:rgba(0,0,0,0.3); border-radius:8px">Sem Imagem</div>';
+                }
+
+                layout.appendChild(colInfo);
+                layout.appendChild(colVisual);
+                container.appendChild(layout);
+
                 carregarGrafico(stand, canvas);
 
             } catch (error) {
-                console.error('Falha ao carregar detalhes do Stand:', error);
-                container.innerHTML = '<h2>Erro</h2><p>Não foi possível carregar os detalhes do stand.</p>';
+                console.error(error);
+                container.innerHTML = '<h2>Erro</h2><p>Não foi possível carregar os detalhes.</p>';
             }
         }
 
-        //Função auxiliar para criar as linhas de <p>
-        function criarDetalhe(label, valor) {
+        function criarLinha(label, valor) {
             const p = document.createElement('p');
+            p.className = 'detalhe-linha';
             p.innerHTML = `<strong>${label}</strong> ${valor || 'N/A'}`;
             return p;
         }
 
-        //Inicia tudo quando a página carregar
         window.onload = carregarDetalhesStand;
     </script>
-
-    <footer>
-        <p>Projeto desenvolvido pelos alunos João Bastasini, Julia Amadio e Thiago Uliame para a disciplina de Bancos de Dados II.</p>
-    </footer>
 </body>
 </html>

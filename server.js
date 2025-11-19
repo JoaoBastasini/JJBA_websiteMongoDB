@@ -88,27 +88,27 @@ app.get('/api/personagem/:nome', async (req, res) => {
     //(Será uma array vazia [] se ele não pertencer a nenhum grupo)
     personagem.grupos = resultGrupos.rows;
     
-    // [CORREÇÃO] Query 3: Busca os episódios (Sem espaços inválidos)
-    // A indentação foi refeita com espaços normais.
+    //[CORREÇÃO] Query 3: Busca os episódios (Sem espaços inválidos)
+    //A indentação foi refeita com espaços normais.
     const queryEpisodios = `
     SELECT E.numero, E.nome 
     FROM Episodios E 
     JOIN Personagem_Episodio PE ON E.numero = PE.episodio_numero 
     WHERE PE.personagem_nome = $1
     ORDER BY E.numero ASC
-`; // <-- O '`' final deve estar limpo
+`; //<-- O '`' final deve estar limpo
     const resultEpisodios = await pool.query(queryEpisodios, [nomePersonagem]);
-    personagem.episodios = resultEpisodios.rows; // Adiciona ao objeto
+    personagem.episodios = resultEpisodios.rows; //Adiciona ao objeto
 
-    // [CORREÇÃO] Query 4: Busca as batalhas (Sem espaços inválidos)
-    // A indentação foi refeita com espaços normais.
+    //[CORREÇÃO] Query 4: Busca as batalhas (Sem espaços inválidos)
+    //A indentação foi refeita com espaços normais.
     const queryBatalhas = `
     SELECT * FROM Batalha 
     WHERE personagem_a = $1 OR personagem_b = $1
     ORDER BY episodio_inicial ASC
-`; // <-- O '`' final deve estar limpo
+`; //<-- O '`' final deve estar limpo
     const resultBatalhas = await pool.query(queryBatalhas, [nomePersonagem]);
-    personagem.batalhas = resultBatalhas.rows; // Adiciona ao objeto
+    personagem.batalhas = resultBatalhas.rows; //Adiciona ao objeto
 
     //Envia o objeto 'personagem' agora combinado com stands, episodios e batalhas
     res.json(personagem);
@@ -159,31 +159,31 @@ app.get('/api/stand/:nome', async (req, res) => {
 
 app.get('/api/partes-com-episodios', async (req, res) => {
   try {
-    // Query 1: Busca todas as Partes, ordenadas por número
+    //Query 1: Busca todas as Partes, ordenadas por número
     const queryPartes = 'SELECT * FROM Partes ORDER BY numero ASC';
     const resultPartes = await pool.query(queryPartes);
     const partes = resultPartes.rows;
 
-    // Query 2: Busca TODOS os Episódios, já ordenados
+    //Query 2: Busca TODOS os Episódios, já ordenados
     const queryEpisodios = 'SELECT * FROM Episodios ORDER BY parte_numero ASC, numero ASC';
     const resultEpisodios = await pool.query(queryEpisodios);
     const todosEpisodios = resultEpisodios.rows;
 
-    // Agora, vamos agrupar os episódios dentro de suas respectivas partes
+    //Agora, vamos agrupar os episódios dentro de suas respectivas partes
     const partesComEpisodios = partes.map(parte => {
-      // Filtra a lista de todos os episódios, pegando só os desta parte
+      //Filtra a lista de todos os episódios, pegando só os desta parte
       const episodiosDaParte = todosEpisodios.filter(ep => 
         ep.parte_numero === parte.numero
       );
       
-      // Retorna o objeto da parte com a lista de episódios aninhada
+      //Retorna o objeto da parte com a lista de episódios aninhada
       return {
-        ...parte, // Mantém os dados da parte (numero, nome, ano, etc.)
-        episodios: episodiosDaParte // Adiciona o array de episódios
+        ...parte, //Mantém os dados da parte (numero, nome, ano, etc.)
+        episodios: episodiosDaParte //Adiciona o array de episódios
       };
     });
 
-    // Envia o JSON agrupado
+    //Envia o JSON agrupado
     res.json(partesComEpisodios);
 
   } catch (err) {
@@ -192,10 +192,10 @@ app.get('/api/partes-com-episodios', async (req, res) => {
   }
 });
 
-// ROTA DA API: Contagem de Personagens por Nacionalidade (para o Dashboard)
+//ROTA DA API: Contagem de Personagens por Nacionalidade (para o Dashboard)
 app.get('/api/estatisticas/nacionalidade', async (req, res) => {
   try {
-    // Query SQL: Agrupa e conta personagens por nacionalidade
+    //Query SQL: Agrupa e conta personagens por nacionalidade
     const query = `
       SELECT nacionalidade, COUNT(*) 
       FROM Personagens 
@@ -204,7 +204,7 @@ app.get('/api/estatisticas/nacionalidade', async (req, res) => {
     `;
     const result = await pool.query(query);
     
-    // Envia o resultado: Ex: [{ nacionalidade: 'Japonesa', count: '10' }, ...]
+    //Envia o resultado: Ex: [{ nacionalidade: 'Japonesa', count: '10' }, ...]
     res.json(result.rows);
   } catch (err) {
     console.error('Erro ao buscar estatísticas de nacionalidade:', err);
