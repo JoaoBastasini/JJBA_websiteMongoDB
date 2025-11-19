@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Enciclopédia JoJo - Episódios</title>
-    <link rel="stylesheet" href="style.css">
+    <!-- Garante que os estilos externos (incluindo os novos) sejam carregados -->
+    <link rel="stylesheet" href="style.css"> 
     <script src="global.js" defer></script>
 </head>
 <body>
@@ -15,8 +16,6 @@
             <a href="stands.html">Stands</a>
             <b>Partes</b>
             <a href="nationality.html">Dashboard</a>
-            <!-- Você pode adicionar este link nas outras páginas também -->
-            <!-- <a href="parts.html">Episódios</a> -->
         </nav>
     </header>
 
@@ -33,51 +32,68 @@
             container.innerHTML = ''; // Limpa o "Carregando..."
 
             try {
-                // 1. Chama a nova rota da API que busca tudo agrupado
+                // 1. Chama a rota da API que busca tudo agrupado
                 const response = await fetch('/api/partes-com-episodios');
                 if (!response.ok) {
-                    throw new Error('Falha ao buscar dados');
+                    throw new Error('Falha na API de partes.');
                 }
-                
-                const partes = await response.json(); // Ex: [{numero: 1, nome: 'Phantom Blood', episodios: [...]}, ...]
+                const partes = await response.json(); 
 
-                // 2. Itera sobre cada PARTE (Temporada)
+                // 2. Itera sobre cada Parte (Phantom Blood, Battle Tendency, etc.)
                 partes.forEach(parte => {
-                    
-                    // Cria o título da Parte (ex: "Parte 1: Phantom Blood")
-                    const h2Parte = document.createElement('h2');
-                    h2Parte.className = 'parte-titulo'; // Classe para o CSS
-                    h2Parte.textContent = `Parte ${parte.numero}: ${parte.nome}`;
-                    container.appendChild(h2Parte);
+                    // Cria o container principal para a Parte (usará a classe CSS .parte-container)
+                    const divParte = document.createElement('section');
+                    divParte.className = 'parte-container';
 
-                    // Cria um container para os episódios desta parte
+                    // Título da Parte
+                    const h2Titulo = document.createElement('h2');
+                    // Usa a classe CSS .parte-titulo
+                    h2Titulo.className = 'parte-titulo';
+                    h2Titulo.textContent = `Parte ${parte.numero}: ${parte.nome}`;
+                    divParte.appendChild(h2Titulo);
+
+                    // ==========================================================
+                    // INCLUSÃO DA DESCRIÇÃO DA PARTE
+                    // ==========================================================
+                    const pDescricao = document.createElement('p');
+                    // Usa a nova classe CSS .parte-descricao
+                    pDescricao.className = 'parte-descricao';
+                    pDescricao.textContent = parte.descricao || 'Descrição não disponível.';
+                    divParte.appendChild(pDescricao);
+                    // ==========================================================
+
+
+                    // Container para a lista de episódios (usará a classe CSS .episodio-lista)
                     const divListaEpisodios = document.createElement('div');
-                    divListaEpisodios.className = 'episodio-lista'; // Classe para o CSS
-                    
-                    // 3. Itera sobre cada EPISÓDIO dentro da parte
-                    parte.episodios.forEach(ep => {
-                        // Cria o "card" para o episódio
-                        const divEpisodio = document.createElement('div');
-                        divEpisodio.className = 'episodio-item'; // Classe para o CSS
+                    divListaEpisodios.className = 'episodio-lista';
 
-                        // Cria o título do episódio
+                    // 3. Itera sobre os episódios dentro daquela Parte
+                    parte.episodios.forEach(ep => {
+                        // Cria o "card" do episódio (usará a classe CSS .episodio-item)
+                        const divEpisodio = document.createElement('div');
+                        divEpisodio.className = 'episodio-item';
+
+                        // Título do episódio (Número e Nome)
                         const h3EpTitulo = document.createElement('h3');
                         h3EpTitulo.textContent = `Ep. ${ep.numero}: ${ep.nome}`;
                         
-                        // Cria a descrição do episódio
+                        // Descrição do episódio
                         const pEpDescricao = document.createElement('p');
                         pEpDescricao.textContent = ep.descricao || 'Descrição não disponível.';
 
-                        // Adiciona o título e a descrição ao "card"
+                        // Adiciona ao "card"
                         divEpisodio.appendChild(h3EpTitulo);
                         divEpisodio.appendChild(pEpDescricao);
 
-                        // Adiciona o "card" do episódio à lista da parte
+                        // Adiciona o "card" à lista da parte
                         divListaEpisodios.appendChild(divEpisodio);
                     });
 
-                    // Adiciona a lista de episódios ao container principal
-                    container.appendChild(divListaEpisodios);
+                    // Adiciona a lista de episódios ao container da Parte
+                    divParte.appendChild(divListaEpisodios);
+                    
+                    // Adiciona o container da Parte ao container principal da página
+                    container.appendChild(divParte);
                 });
 
             } catch (error) {

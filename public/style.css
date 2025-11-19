@@ -244,74 +244,75 @@ footer.footer-hidden {
 /* Lhama fazendo merda  dnv  */
 /* ================================== */
 
-/* [NOVO] O "card" de cada Parte */
+/* Container Principal de cada Parte */
 .parte-container {
-    background-color: #2b0b3f; /* Fundo roxo escuro (igual o de detalhes) */
-    border: 1px solid #46096e;
-    border-radius: 12px; /* Cantos mais arredondados */
-    padding: 1.5rem 2rem;
-    margin-bottom: 3rem; /* MAIS ESPAÇO entre as partes */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Sombra para destacar */
+    background-color: #2b0b3f; /* Fundo roxo escuro (igual ao #lista-personagens) */
+    padding: 2rem;
+    margin-bottom: 3rem; /* Espaço entre as partes */
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
-/* Título da Parte (ATUALIZADO) */
+/* Título da Parte (h2) */
 .parte-titulo {
     color: #ffd6ff; 
-    margin-top: 0; /* Remove a margem de cima, o container já tem */
+    border-bottom: 2px solid #7209b7;
+    padding-bottom: 10px; 
+    margin-top: 0;
     margin-bottom: 1rem;
-    border-bottom: 2px solid #d0bcdd;
-    padding-bottom: 10px; /* Mais espaço no padding */
-    font-size: 2rem; /* Título maior */
-    text-align: center; /* Título da parte centralizado */
+    font-size: 2rem;
+    text-align: center;
 }
 
-/* [NOVO] Descrição da Parte */
+/* Descrição da Parte (p) */
 .parte-descricao {
     color: #d0bcdd; /* Roxo mais suave para a descrição */
     text-align: center;
     font-size: 1.1rem;
     line-height: 1.6;
     margin-top: 1rem;
-    margin-bottom: 2rem; /* Espaço antes da lista de episódios */
+    margin-bottom: 2.5rem; /* Espaço antes da lista de episódios */
     font-style: italic;
+    border-left: 3px solid #b5179e; /* Barra lateral de destaque */
+    padding-left: 15px;
+    display: inline-block; /* Para centralizar o bloco de texto */
+    max-width: 90%;
 }
 
-/* Container para a lista de episódios (Sem mudança) */
+/* Container para a lista de episódios (usa CSS Grid) */
 .episodio-lista {
-    max-width: 800px; 
-    margin: 1rem auto;
-    padding: 0;
+    display: grid;
+    /* Faz os cards se ajustarem, de no mínimo 300px cada, e ocupar o espaço disponível */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+    gap: 1.5rem;
 }
 
-/* "Card" individual de cada episódio (ATUALIZADO) */
+/* "Card" individual de cada episódio */
 .episodio-item {
-    background-color: #3c1361; /* Fundo um pouco mais escuro que o .parte-container */
-    border: 1px solid #46096e;
+    background-color: #3c1361; /* Fundo um pouco mais claro que o .parte-container */
     border-radius: 8px;
-    padding: 15px 20px;
-    margin-bottom: 1rem;
-    /* [NOVO] Efeito suave ao passar o mouse */
+    padding: 15px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* [NOVO] Efeito hover nos episódios */
 .episodio-item:hover {
-    transform: translateY(-3px); /* Levanta o card levemente */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transform: translateY(-3px); /* Efeito de elevação */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
 
-/* Título do episódio (Sem mudança) */
 .episodio-item h3 {
-    color: #f7a0ff; 
+    color: #f7a0ff; /* Título do episódio */
+    font-size: 1.1rem;
     margin-top: 0;
     margin-bottom: 0.5rem;
-    font-size: 1.25rem;
+    border-bottom: 1px solid #46096e;
+    padding-bottom: 5px;
 }
 
-/* Descrição do episódio (Sem mudança) */
 .episodio-item p {
-    color: #f8f9fa;
-    margin: 0;
-    line-height: 1.5;
     font-size: 0.95rem;
+    color: #ccc;
+    margin: 0;
+    line-height: 1.4;
 }
