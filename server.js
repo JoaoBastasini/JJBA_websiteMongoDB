@@ -84,7 +84,7 @@ app.get('/api/personagem/:nome', async (req, res) => {
 
     const resultGrupos = await pool.query(queryGrupos, [nomePersonagem]);
 
-    //Addd a array de grupos ao objeto do personagem
+    //Add a array de grupos ao objeto do personagem
     //(Será uma array vazia [] se ele não pertencer a nenhum grupo)
     personagem.grupos = resultGrupos.rows;
     

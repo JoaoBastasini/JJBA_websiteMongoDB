@@ -158,6 +158,27 @@
                 //Limpa o "Carregando..." e constrói o HTML
                 container.innerHTML = ''; //Limpa
 
+                //--- LÓGICA PARA MOSTRAR IMG ---
+                //1. Verifica se o nome da imagem existe no banco
+                if (stand.imgname) { 
+
+                    //2. Cria um elemento <img>
+                    const img = document.createElement('img');
+
+                    //3. Constrói o caminho (src) dinamicamente
+                    img.src = '/images/stands/' + stand.imgname; 
+
+                    //ESTILOS DE CENTRALIZAÇÃO
+                    img.style.display = 'block';        //Torna a imagem um elemento de bloco
+                    img.style.margin = '0 auto';        //Centraliza horizontalmente (auto nas laterais)
+                    img.style.marginBottom = '1.5rem';  //Adiciona um espaço abaixo, antes do título
+                    img.style.maxWidth = '400px';       //Largura máxima
+
+                    //4. Adiciona a imagem ao container
+                    container.appendChild(img); 
+                }
+                //------------ FIM -----------
+
                 //Título
                 const titulo = document.createElement('h2');
                 titulo.textContent = stand.nome;
