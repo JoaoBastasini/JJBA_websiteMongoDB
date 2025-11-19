@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="global.js" defer></script>
     
+    <!-- Biblioteca Chart.js para o gráfico de pizza -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -15,8 +16,9 @@
             <a href="index.html">Início</a>
             <a href="characters.html">Personagens</a>
             <a href="stands.html">Stands</a>
-            <a href="parts.html">Partes</a>
-            <b>Dashboard</b>
+            <a href="parts.html">Episódios</a>
+            <!-- NOVO: Link para a nova página de dashboard -->
+            <a href="nationality.html">Dashboard</a> 
         </nav>
     </header>
 
@@ -24,9 +26,12 @@
         <section>
             <h2 style="text-align: center; color: #ffd6ff;">Análise de Personagens</h2>
             
+            <!-- .chart-box é o card do gráfico, que receberá o hover -->
             <div class="chart-box"> 
                 <h3>Personagens por Nacionalidade</h3>
-                <div class="chart-container" style="max-width: 400px; aspect-ratio: auto; width: 100%;">
+                
+                <!-- O .chart-container será dimensionado via CSS -->
+                <div class="chart-container">
                     <canvas id="nacionalidadeChart"></canvas> 
                 </div>
             </div>
@@ -35,51 +40,97 @@
     </main>
 
     <script>
+        // Paleta de cores Jojo/Roxo/Magenta com alto contraste
+        const JOJO_PALETTE = [
+            '#f7a0ff', // Magenta Claro (Destaque)
+            '#7209b7', // Roxo Forte (Header)
+            '#b5179e', // Rosa Púrpura (Contraste)
+            '#3a0ca3', // Azul Violeta Escuro (Footer)
+            '#4361ee', // Azul Brilhante
+            '#8338ec', // Violeta Médio
+            '#ffbe0b', // Amarelo (Contraste Máximo - Gold Experience)
+            '#fb5607'  // Laranja (Contraste Secundário)
+        ];
+
+        // Função para gerar uma cor hexadecimal aleatória, para fatias extras
+        function generateCoolColor() {
+            // Gera um valor que favorece os tons roxos/rosas (RGB: alto B e R médio, G baixo)
+            const r = Math.floor(Math.random() * 100) + 100;
+            const g = Math.floor(Math.random() * 50);
+            const b = Math.floor(Math.random() * 100) + 155; 
+            
+            const toHex = c => c.toString(16).padStart(2, '0');
+            
+            return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+        }
+
         async function carregarDashboard() {
             try {
-                // Busca dados da API de estatísticas
+                // 1. Busca dados da API de estatísticas
                 const response = await fetch('/api/estatisticas/nacionalidade');
                 if (!response.ok) {
-                    throw new Error('Falha ao buscar estatísticas de nacionalidade');
+                    throw new Error('Falha ao buscar estatísticas de nacionalidade.');
                 }
-                const dados = await response.json(); 
-                // Ex: [{ nacionalidade: 'Japonesa', count: '10' }, ...]
+                const estatisticas = await response.json(); // Ex: [{nacionalidade: "Japão", count: 12}, ...]
 
-                // Prepara os dados para o Chart.js
-                const labels = dados.map(item => item.nacionalidade); // Ex: ['Japonesa', 'Britânica', ...]
-                const counts = dados.map(item => parseInt(item.count)); // Ex: [10, 5, ...]
+                // 2. Extrai rótulos e contagens
+                const labels = estatisticas.map(item => item.nacionalidade);
+                const counts = estatisticas.map(item => item.count);
 
-                // Define as cores (usando o esquema de cores do CSS)
-                const cores = [
-                    '#b5179e', // Roxo escuro
-                    '#7209b7', // Roxo médio
-                    '#560bad', // Azul-roxo
-                    '#3a0ca3', // Azul escuro
-                    '#f7a0ff', // Roxo claro
-                    '#ffd6ff', // Branco/Rosa claro
-                ];
+                // 3. Gera cores a partir da paleta fixa e usa o fallback para o restante
+                const cores = labels.map((_, index) => 
+                    index < JOJO_PALETTE.length ? JOJO_PALETTE[index] : generateCoolColor()
+                );
                 
-                // Cria o gráfico
+                // 4. Cria o gráfico de pizza
                 const ctx = document.getElementById('nacionalidadeChart').getContext('2d');
                 new Chart(ctx, {
-                    type: 'doughnut',
+                    type: 'pie',
                     data: {
                         labels: labels,
                         datasets: [{
                             label: 'Contagem de Personagens',
                             data: counts,
                             backgroundColor: cores,
-                            borderColor: '#1a001f',
-                            borderWidth: 2
+                            borderColor: '#1a001f', // Cor do fundo do body para borda
+                            borderWidth: 2,
+                            // [NOVO] Faz a fatia "pular" para fora quando o mouse passa em cima
+                            hoverOffset: 20 
                         }]
                     },
                     options: {
                         responsive: true,
+                        layout: {
+                            // Adiciona um pouco de padding para que a fatia não seja cortada ao expandir
+                            padding: 20 
+                        },
+                        // Configurações do gráfico para melhor legibilidade
                         plugins: {
                             legend: {
-                                position: 'right', // Move a legenda para a direita
+                                position: 'right', // Move a legenda para a direita para otimizar o espaço
                                 labels: {
-                                    color: '#f8f9fa' // Cor branca para a legenda
+                                    color: '#f8f9fa', // Cor branca para a legenda
+                                    font: {
+                                        size: 14 // Aumenta o tamanho da fonte da legenda
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                // Adiciona o percentual no tooltip para melhor contexto
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed !== null) {
+                                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                            const currentValue = context.parsed;
+                                            const percentage = ((currentValue / total) * 100).toFixed(1) + '%';
+                                            label += currentValue + ' (' + percentage + ')';
+                                        }
+                                        return label;
+                                    }
                                 }
                             },
                             title: {
@@ -92,7 +143,7 @@
             } catch (error) {
                 console.error('Erro ao carregar Dashboard:', error);
                 // Exibir erro dentro do chart-box
-                document.querySelector('.chart-box').innerHTML = '<p style="color: #f7a0ff;">Erro ao carregar dados do gráfico.</p>';
+                document.querySelector('.chart-box').innerHTML = '<p style="color: #f7a0ff; text-align: center;">Erro ao carregar dados do gráfico.</p>';
             }
         }
 
