@@ -1,7 +1,7 @@
 ## Website-Enciclopédia JoJo's Bizarre Adventure 
 [![Deploy Status](https://img.shields.io/badge/Deploy-Render-success?style=for-the-badge&logo=render)](https://jojo-wiki.onrender.com/)
 
-Projeto de aplicação web dinâmica com front-end (HTML, CSS, JS) e back-end (Node.js, Express) conectado a um banco de dados PostgreSQL (Neon).
+Projeto de aplicação web dinâmica com front-end (HTML, CSS, JS) e back-end (Node.js, Express) conectado a um banco de dados MongoDB (Atlas).
 
 Este projeto foi desenvolvido para a disciplina de Bancos de Dados II, com o objetivo de exibir dinamicamente informações sobre o universo de JoJo's Bizarre 
 Adventure.
@@ -10,7 +10,7 @@ Adventure.
 
 A aplicação está rodando em produção. Você pode acessá-la clicando no link abaixo:
 <br>
-👉 **[Acessar Enciclopédia JoJo (Live Demo)](https://jojo-wiki.onrender.com/)**
+👉 ** To be made **
 
 ## Tecnologias utilizadas
 
@@ -23,21 +23,19 @@ A aplicação está rodando em produção. Você pode acessá-la clicando no lin
 ### Back-End
 * **Node.js**: Ambiente de execução do servidor.
 * **Express.js**: Framework para criar o servidor web e as rotas da API.
-* **node-postgres (`pg`)**: Driver para conectar o Node.js ao banco de dados PostgreSQL.
+
 
 ### Banco de dados e infraestrutura
-* **PostgreSQL**: Sistema de gerenciamento de banco de dados relacional.
-* **Neon**: Plataforma de hospedagem serverless para o PostgreSQL na nuvem.
-* **Render**: Plataforma de cloud utilizada para o deploy da aplicação.
+
 
 ## Como executar
 
-É necessário ter o [Node.js](https://nodejs.org/) (versão 16 ou superior) instalado.
+É necessário ter xxxx instalado.
 
 1.  **Clone o repositório**
     <br>No terminal, navegue até a pasta onde você deseja clonar o repositório e utilize o comando:
     ```bash
-    git clone https://github.com/Julia-Amadio/JJBA_website.git
+    git clone xxxxx
     ```
 
 2.  **Configure as Variáveis de Ambiente (.env)**
@@ -45,7 +43,7 @@ A aplicação está rodando em produção. Você pode acessá-la clicando no lin
     * Crie um arquivo chamado `.env` na raiz do projeto.
     * Adicione sua string de conexão do Neon dentro dele:
     ```env
-    DATABASE_URL="postgresql://usuario:senha@endpoint-neon.tech/neondb?sslmode=require"
+    DATABASE_URL=xxxxxxx
     ```
 
 3.  **Instale as Dependências do Back-End**
