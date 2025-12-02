@@ -6,6 +6,8 @@ Projeto de aplicação web dinâmica com front-end (HTML, CSS, JS) e back-end (N
 Este projeto foi desenvolvido para a disciplina de Bancos de Dados II, com o objetivo de exibir dinamicamente informações sobre o universo de JoJo's Bizarre 
 Adventure.
 
+Esta é a parte 2 do projeto, que consiste em migrar de PostgreSQL (Neon) para NoSQL (MongoDB Atlas). Por isso, algumas formatações foram feitas no backend para facilitar a passagem correta para o frontend sem precisar revisitar todas as páginas. a parte 1 pode ser encontrada em: [Parte 1](https://github.com/Julia-Amadio/JJBA_website.git)
+
 ## 🔗 Acesso Online
 
 A aplicação está rodando em produção. Você pode acessá-la clicando no link abaixo:
