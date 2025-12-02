@@ -30,12 +30,12 @@ A aplicação está rodando em produção. Você pode acessá-la clicando no lin
 
 ## Como executar
 
-É necessário ter xxxx instalado.
+É necessário ter [Node.js](https://nodejs.org/) (versão 16 ou superior) instalado.
 
 1.  **Clone o repositório**
     <br>No terminal, navegue até a pasta onde você deseja clonar o repositório e utilize o comando:
     ```bash
-    git clone xxxxx
+    git clone https://github.com/JoaoBastasini/JJBA_websiteMongoDB.git
     ```
 
 2.  **Configure as Variáveis de Ambiente (.env)**
@@ -43,7 +43,7 @@ A aplicação está rodando em produção. Você pode acessá-la clicando no lin
     * Crie um arquivo chamado `.env` na raiz do projeto.
     * Adicione sua string de conexão do Neon dentro dele:
     ```env
-    DATABASE_URL=xxxxxxx
+    mongoConnectionString="mongodb+srv://admin:SUA_SENHA_MONGO@cluster0.abcde.mongodb.net/?..."
     ```
 
 3.  **Instale as Dependências do Back-End**
@@ -70,4 +70,4 @@ O deploy foi realizado utilizando a plataforma **Render** conectado diretamente 
 * **Serviço:** Web Service (Node.js)
 * **Build Command:** `npm install`
 * **Start Command:** `node server.js`
-* **Variáveis de ambiente:** `DATABASE_URL` foi configurada diretamente no painel de controle do Render para garantir a segurança das credenciais do banco Neon.
+* **Variáveis de ambiente:** `mongoConnectionString` foi configurada diretamente no painel de controle do Render para garantir a segurança das credenciais do banco MongoDB.
