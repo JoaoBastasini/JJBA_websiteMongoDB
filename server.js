@@ -50,7 +50,7 @@ app.get('/api/stands', async (req, res) => {
       personagem_nome: p.nome // Adiciona o campo de referência manual
     }));
 
-    //Ordenação via JavaScript (pois extraímos de documentos diferentes)
+    //Ordenação alfabética com JavaScript
     listaStands.sort((a, b) => a.nome.localeCompare(b.nome));
 
     //Envia os dados encontrados como JSON
@@ -79,14 +79,13 @@ app.get('/api/personagens', async (req, res) => {
   }
 });
 
-//ROTA DA API: Buscar UM personagem específico (ATUALIZADA)
+//ROTA DA API: Buscar UM personagem específico
 //O ':nome' é um parâmetro dinâmico
 app.get('/api/personagem/:nome', async (req, res) => {
   try {
     const nomePersonagem = req.params.nome; 
 
-    //Query Simples: Busca o documento completo do personagem pelo nome
-    //Ao invés de 5 JOINs, fazemos 1 busca pelo documento completo.
+    //Query Simples: Busca o documento completo do personagem pelo nome.
     const personagemDoc = await db.collection('personagens').findOne({ nome: nomePersonagem });
 
     if (!personagemDoc) {
@@ -133,8 +132,8 @@ app.get('/api/stand/:nome', async (req, res) => {
 
     //Monta o objeto do stand combinando os dados internos
     const standObj = {
-      ...dono.stand, // Pega stats, imagem, categoria...
-      personagem_nome: dono.nome // Pega o nome do dono do documento pai
+      ...dono.stand, // Pega os dados do stand todos de uma vez
+      personagem_nome: dono.nome // Pega o nome do dono do documento pai e adiciona ao stand
     };
 
     //Envia o objeto 'stand' combinado
@@ -154,8 +153,7 @@ app.get('/api/partes-com-episodios', async (req, res) => {
       .sort({ numero: 1 }) // Ordena pelo número da Parte
       .toArray();
 
-    //Não precisamos mais fazer o map/filter do JavaScript, 
-    //pois o banco NoSQL já entrega a estrutura pronta!
+    //Não precisamos mais fazer o map/filter do JavaScript, pois o banco NoSQL já entrega a estrutura pronta!
     
     //Envia o JSON agrupado
     res.json(partes);
