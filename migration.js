@@ -3,10 +3,10 @@ const { MongoClient } = require('mongodb');
 
 // --- CONFIGURAÇÕES ---
 // String de conexão do PostgreSQL (Neon)
-const pgConnectionString = "";
+const pgConnectionString = process.env.pgConnectionString;
 
 // 2. String de conexão do MongoDB Atlas
-const mongoConnectionString = "";
+const mongoConnectionString = process.env.mongoConnectionString;
 
 async function migrate() {
     const pgClient = new Client({ connectionString: pgConnectionString });
