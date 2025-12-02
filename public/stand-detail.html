@@ -200,12 +200,12 @@
         function carregarGrafico(dadosDoStand, canvas) {
             const ctx = canvas.getContext('2d');
             const dadosNumericos = [
-                converterStatusParaNumero(dadosDoStand.poder_destrutivo),
-                converterStatusParaNumero(dadosDoStand.velocidade),
-                converterStatusParaNumero(dadosDoStand.alcance),
-                converterStatusParaNumero(dadosDoStand.durabilidade),
-                converterStatusParaNumero(dadosDoStand.precisao),
-                converterStatusParaNumero(dadosDoStand.potencial)
+                converterStatusParaNumero(dadosDoStand.stats.destrutivo),
+                converterStatusParaNumero(dadosDoStand.stats.velocidade),
+                converterStatusParaNumero(dadosDoStand.stats.alcance),
+                converterStatusParaNumero(dadosDoStand.stats.durabilidade),
+                converterStatusParaNumero(dadosDoStand.stats.precisao),
+                converterStatusParaNumero(dadosDoStand.stats.potencial)
             ];
 
             if (meuGrafico) meuGrafico.destroy();
