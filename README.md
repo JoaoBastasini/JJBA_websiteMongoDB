@@ -1,5 +1,5 @@
 ## Website-Enciclopédia JoJo's Bizarre Adventure 
-[![Deploy Status](https://img.shields.io/badge/Deploy-Render-success?style=for-the-badge&logo=render)](https://jojo-wiki.onrender.com/)
+[![Deploy Status](https://img.shields.io/badge/Deploy-Render-success?style=for-the-badge&logo=render)](https://jjba-websitemongodb.onrender.com/)
 
 Projeto de aplicação web dinâmica com front-end (HTML, CSS, JS) e back-end (Node.js, Express) conectado a um banco de dados MongoDB (Atlas).
 
@@ -12,7 +12,7 @@ Esta é a parte 2 do projeto, que consiste em migrar de PostgreSQL (Neon) para N
 
 A aplicação está rodando em produção. Você pode acessá-la clicando no link abaixo:
 <br>
-👉 ** To be made **
+👉 **[Acessar Enciclopédia JoJo (Live Demo)](https://jjba-websitemongodb.onrender.com/)**
 
 ## Tecnologias utilizadas
 
@@ -73,3 +73,4 @@ O deploy foi realizado utilizando a plataforma **Render** conectado diretamente 
 * **Build Command:** `npm install`
 * **Start Command:** `node server.js`
 * **Variáveis de ambiente:** `mongoConnectionString` foi configurada diretamente no painel de controle do Render para garantir a segurança das credenciais do banco MongoDB.
+`pgConnectionString` foi configurada diretamente no painel de controle do Render para garantir a segurança das credenciais do banco Neon (Necessária apenas para a migração dos dados, implementada por completute do código).
