@@ -9,7 +9,7 @@ const port = 3000; //Porta onde o servidor vai rodar
 
 //Conexão com o banco (MongoDB)
 //Precisa da URL no arquivo .env
-const uri = process.env.MONGO_URI; 
+const uri = process.env.mongoConnectionString; 
 const client = new MongoClient(uri);
 
 let db; //Variável global para guardar a conexão com o banco
