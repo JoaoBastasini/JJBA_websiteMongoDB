@@ -73,4 +73,4 @@ O deploy foi realizado utilizando a plataforma **Render** conectado diretamente 
 * **Build Command:** `npm install`
 * **Start Command:** `node server.js`
 * **Variáveis de ambiente:** `mongoConnectionString` foi configurada diretamente no painel de controle do Render para garantir a segurança das credenciais do banco MongoDB.
-`pgConnectionString` foi configurada diretamente no painel de controle do Render para garantir a segurança das credenciais do banco Neon (Necessária apenas para a migração dos dados, implementada por completute do código).
+* **Variáveis de ambiente:** `pgConnectionString` foi configurada diretamente no painel de controle do Render para garantir a segurança das credenciais do banco Neon (Necessária apenas para a migração dos dados, implementada por completute do código).
