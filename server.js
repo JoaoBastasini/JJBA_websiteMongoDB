@@ -134,10 +134,7 @@ app.get('/api/stand/:nome', async (req, res) => {
     //Monta o objeto do stand combinando os dados internos
     const standObj = {
       ...dono.stand, // Pega stats, imagem, categoria...
-      personagem_nome: dono.nome, // Pega o nome do dono do documento pai
-      
-      //Garante que habilidades seja uma array (caso não tenha migrado ainda)
-      habilidades: dono.stand.habilidades || [] 
+      personagem_nome: dono.nome // Pega o nome do dono do documento pai
     };
 
     //Envia o objeto 'stand' combinado
