@@ -20,7 +20,7 @@ async function migrate() {
         const db = mongoClient.db("jjba_wiki");
         const collection = db.collection("personagens");
 
-        // Limpa coleção para evitar duplicatas nos testes
+        // Limpa coleção para evitar duplicatas
         await collection.deleteMany({});
 
         // Busca Personagens do PostgreSQL
