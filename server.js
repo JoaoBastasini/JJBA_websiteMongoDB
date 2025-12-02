@@ -5,7 +5,7 @@ require('dotenv').config();
 
 //Inicializar o Express
 const app = express();
-const port = 3000; //Porta onde o servidor vai rodar
+const port = process.env.PORT || 3000; //Porta onde o servidor vai rodar)
 
 //Conexão com o banco (MongoDB)
 //Precisa da URL no arquivo .env
