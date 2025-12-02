@@ -48,6 +48,7 @@ async function migrate() {
             // Busca Stand do personagem (JOIN manual)
             // Transforma uma tabela separada em um objeto embutido
             const resStand = await pgClient.query(
+                // $1 é placeholder, evita erro com nomes que contenham ' e SQL injection
                 'SELECT * FROM stands WHERE personagem_nome = $1', 
                 [p.nome]
             );
