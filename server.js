@@ -93,8 +93,21 @@ app.get('/api/personagem/:nome', async (req, res) => {
     }
 
     //Adaptação para o Front-End:
-    //O site foi construído esperando Arrays para stands, grupos, etc.
-    //No Mongo, se usamos embedding 1:1, precisamos envolver em um array.
+
+    let gruposDetalhados = [];
+    if (personagemDoc.afiliacoes && personagemDoc.afiliacoes.length > 0) {
+      //Busca os detalhes dos grupos associados ao personagem
+      gruposDetalhados = await db.collection('grupos')
+        .find({ nome: { $in: personagemDoc.afiliacoes } })
+        .toArray();
+    }
+
+    const batalhas = await db.collection('batalhas').find({
+      $or: [
+        {personagem_a: nomePersonagem },
+        {personagem_b: nomePersonagem }
+      ]
+    }).toArray();
     
     const resposta = {
       ...personagemDoc,
@@ -102,10 +115,15 @@ app.get('/api/personagem/:nome', async (req, res) => {
       //Se existe um stand, coloca num array [stand], senão array vazio []
       stands: personagemDoc.stand ? [personagemDoc.stand] : [],
       
-      //Garante que retorne array vazio se os campos não existirem no documento
-      grupos: personagemDoc.grupos || [],
-      episodios: personagemDoc.episodios || [],
-      batalhas: personagemDoc.batalhas || []
+      // Lista de grupos detalhados
+      grupos: gruposDetalhados ,
+
+      // Lista de batalhas envolvendo o personagem
+      batalhas: batalhas,
+
+      // Garante que 'episodios' sempre exista como array, não temos todos eps no BD
+      episodios: personagemDoc.episodios || []
+
     };
 
     //Envia o objeto 'personagem' completo

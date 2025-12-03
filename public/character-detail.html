@@ -268,7 +268,7 @@
 
                     personagem.episodios.forEach(ep => {
                         const li = document.createElement('li');
-                        li.innerHTML = `<strong>Ep. ${ep.numero}:</strong> ${ep.nome}`;
+                        li.innerHTML = `<strong>Parte ${ep.parte_numero || ep.numero}:</strong> ${ep.nome || 'Participação confirmada'}`;
                         ulEp.appendChild(li);
                     });
                     colTexto.appendChild(ulEp);
