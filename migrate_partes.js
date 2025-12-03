@@ -1,5 +1,6 @@
 const { Client } = require('pg');
 const { MongoClient } = require('mongodb');
+require('dotenv').config();
 
 const pgConnectionString = process.env.pgConnectionString;
 const mongoConnectionString = process.env.mongoConnectionString;
